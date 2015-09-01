@@ -56,6 +56,10 @@
       font-size: 200%;
     }
 
+    .coffeescript .javascript, .javascript .xml, .tex .hljs-formula, .xml .javascript, .xml .vbscript, .xml .css, .xml .hljs-cdata {
+      opacity: 0.9 !important;
+    }
+
     .Viewer {
       display: flex;
       flex-direction: column;
@@ -114,18 +118,6 @@
     var firstElement = viewer.firstElementChild
     firstElement.classList.add('-active')
     more(firstElement)
-
-    each(document.querySelectorAll('.Viewer > pre'), function (el) {
-      el.ondblclick = selectAll
-    })
-
-    function selectAll () {
-      var range = document.createRange();
-      range.selectNodeContents(this);
-      var sel = window.getSelection();
-      sel.removeAllRanges();
-      sel.addRange(range)
-    }
 
     function copyAll (element) {
       var range = document.createRange();

@@ -121,6 +121,8 @@ A baby monitor for Launchpads.
 
 ### main.js
 
+> This is just electron boilerplate. It is responsible for creating the window.
+
 ```js
 var join = require('path').join
 var BrowserWindow = require('browser-window')
@@ -144,6 +146,14 @@ app.on('ready', function () {
 
 ### index.html
 
+> In this file, we create a web server. It provides a website to the client and a websocket for them to connect to.
+
+> [SimplePeer](https://github.com/feross/simple-peer) is a wrapper around [RTCPeerConnection](https://developer.mozilla.org/en-US/docs/Web/API/RTCPeerConnection).
+
+> We are not actually streaming the webcam data via the websocket - we're just using web-rtc.
+
+> [beefy](https://github.com/chrisdickinson/beefy) is an http server  that serves up the entries provided as a browserify bundle and can optionally provide a boiler-plate index.html.
+
 ```js
 <html>
   <head>
@@ -156,18 +166,24 @@ app.on('ready', function () {
       var beefy = require('beefy')
       var WebSocketServer = require('ws').Server
       var SimplePeer = require('simple-peer')
+      var videoElement = document.getElementById('viewer')
 
+      // serve the remote website to the client
       var server = http.createServer(beefy({
         entries: ['entry.js'],
         cwd: __dirname + '/client'
       }))
 
+      // websocket for initiating web-cam stream
       var peerServer = new WebSocketServer({ server: server })
       peerServer.on('connection', function (socket) {
         var peer = new SimplePeer()
         peer.on('stream', function (stream) {
-          document.getElementById('viewer').src = URL.createObjectURL(stream)
+          // assign the remote web-cam stream to the video element
+          videoElement.src = URL.createObjectURL(stream)
         })
+
+        // forward the web-rtc peer signals between client/server
         socket.on('message', function (data) {
           peer.signal(JSON.parse(data))
         })
