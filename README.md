@@ -134,13 +134,7 @@ app.on('ready', function () {
     'width': 400,
     'height': 300
   })
-
-  window.on('closed', function () {
-    win = null
-  })
-
   window.loadUrl('file://' + join(__dirname, 'index.html'))
-  window.show()
 })
 ```
 
