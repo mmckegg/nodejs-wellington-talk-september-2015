@@ -127,9 +127,9 @@ A baby monitor for Launchpads.
 var join = require('path').join
 var BrowserWindow = require('browser-window')
 var app = require('app')
-
+var window = null
 app.on('ready', function () {
-  var window = new BrowserWindow({
+  window = new BrowserWindow({
     'title': 'Remote Camera',
     'width': 400,
     'height': 300
@@ -230,7 +230,7 @@ function start (stream, server) {
   "dependencies": {
     "beefy": "~2.1.5",
     "browserify": "~11.0.1",
-    "electron-prebuilt": "~0.31.1",
+    "electron-prebuilt": "~0.27.3",
     "getusermedia": "~1.3.5",
     "simple-peer": "~5.11.5",
     "ws": "~0.8.0"
